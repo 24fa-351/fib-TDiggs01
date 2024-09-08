@@ -2,60 +2,83 @@
 #include <stdlib.h>
 #include <string.h>
 
-int fibRecursion(int nNum) {
-      if(nNum == 0) { return 0; }
-      else if(nNum == 1) { return 1; }
-      return fibRecursion(nNum - 1) + fibRecursion(nNum - 2);
-   }
+int fib_recursion( int nth_term ) {
 
-int fibIterative(int nNum) {
-   int a, cur = 0, b = 1;
-
-   if(nNum == 0) { return 0; }
-   else if(nNum == 1) { return 1; }
-   for(int i = 1; i < nNum; i++) {
-      a = b;
-      b = cur;
-      cur = a + b;
+   if( nth_term == 0 ) {
+      return 0;
    }
-   return cur;
+   else if( nth_term == 1 ) {
+      return 1;
+   }
+   return fib_recursion( nth_term - 1 ) + fib_recursion( nth_term - 2 );
 }
 
-int main(int argc, char *argv[]) {
+
+
+int fib_iterative( int nth_term ) {
+   
+   int previous_a;
+
+   int previous_b = 1;   
+   
+   int current = 0;
+
+   if( nth_term == 0 ) { 
+      return 0;
+   }
+   else if( nth_term == 1 ) {
+      return 1;
+   }
+   for( int ix = 1; ix < nth_term; ix++ ) {
+      previous_a = previous_b;
+      previous_b = current;
+      current = previous_a + previous_b;
+   }
+   
+   return current;
+}
+int main( int argc, char *argv[] ) {
 
    FILE *infile;
-   int N, i;
+
+   int N;
+   
+   int int_in_file;
+
+   int _TWO = 2;
+
+   int _THREE = 3;
+
+   int _FOUR = 4;
 
    /*Check for correct number of arguments*/
-
-   if(argc != 4) {
-      printf("Usage: %s <num> <char> <file>\n", argv[0]);
+   if( argc != _FOUR ) {
+      printf( "Usage: %s <num> <char> <file>\n", argv[0] );
       return 1;
    }
 
    /*Open file*/
-   infile = fopen(argv[3], "r");
+   infile = fopen( argv[_THREE], "r" );
    if(infile == NULL) {
-      fprintf(stderr, "Cannot open file: %s\n", argv[3]);
-      return 3;
+      fprintf( stderr, "Cannot open file: %s\n", argv[_THREE] );
+      return _THREE;
    }
 
    /*Reading file*/
-   fscanf(infile, "%d", &i);
+   fscanf( infile, "%d", &int_in_file );
 
    /*Adding first argument with integer in file*/
-   N = atoi(argv[1]) + i;
+   N = atoi( argv[1] ) + int_in_file;
 
    /*Computing Nth Fibonacci*/
-   if(strcmp(argv[2], "r") == 0) {
-      printf("%d", fibRecursion(N - 1));
+   if(strcmp( argv[_TWO], "r" ) == 0) {
+      printf( "%d", fib_recursion( N - 1) );
    }
-   else if(strcmp(argv[2], "i") == 0) {
-      printf("%d", fibIterative(N));
+   else if( strcmp( argv[_TWO], "i") == 0 ) {
+      printf( "%d", fib_iterative( N ) );
    }
    
-   /*Close file*/
-   fclose(infile);
+   fclose( infile );
 
    return 0;
 }
